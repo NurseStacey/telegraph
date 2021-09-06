@@ -1,0 +1,53 @@
+{% extends 'Base.html' %}
+
+{% block content %}
+<center>
+    <form method="POST">
+        {% csrf_token %} 
+        <button type="submit" class="btn btn-success">Don't show rooms</button>
+        <input type='hidden' name='no_rooms' value='True'> 
+        <input type='hidden' name='facility_dropdown' value='{{which_facilty.name}}'> 
+    </form>
+    
+<form method="POST">
+{% csrf_token %} 
+<input type='hidden' name='no_rooms' value={{no_rooms}}> 
+    <label for="facility_dropdown">Choose a facility</label><br>
+    <select name="facility_dropdown" id="facility_dropdown">
+        <option value='see_all'>See all facilities</option>
+        {% for one_facility in FacilityList %} 
+            {% if one_facility.name == which_facilty.name %} 
+                <option value="{{one_facility.name}}" selected>{{one_facility.name}}</option>
+            {% else %} 
+                <option value="{{one_facility.name}}">{{one_facility.name}}</option>
+            {% endif %} 
+        {% endfor %} 
+    </select><br>
+    <button type="submit" class="btn btn-success">Select a Facility</button>
+    <input type='hidden' name='no_rooms' value='{{no_rooms}}'> 
+</form>
+<form action='/'><button type="submit" class="btn btn-success">Return to Home Screen</button></form>
+    <table border="1" class="center" style="width:800px">
+        <colgroup>
+            <col span="1" style="width: 70%;">
+            <col span="1" style="width: 15%;">
+            <col span="1" style="width: 15%;">
+        </colgroup>
+        
+        <tbody>
+            <tr>
+                <th style="text-align:center">Facility</th>
+                <th style="text-align:center">Unit</th>
+                <th style="text-align:center">Bed</th>
+            </tr>
+            {% for one_bed in BedList %} 
+            <tr>
+                <td style="text-align:center">{{one_bed.unit.facility.name}}</td>
+                <td style="text-align:center">{{one_bed.unit.unit_name}}</td>
+                <td style="text-align:center">{{one_bed.room_number}}-{{one_bed.bed_number}}</td>
+            </tr>
+            {% endfor %} 
+        </tbody>
+    </table>
+</center>
+{% endblock %}

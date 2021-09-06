@@ -1,0 +1,141 @@
+{% extends 'Base.html' %}
+
+
+
+{% block content %}
+<center>
+    Assign Patient
+    <br>
+    <form action='/'>
+        <button type="submit" class="button-index">Return to Home Screen</button>
+    </form>
+</center>
+    <div class="view-info-box">
+        
+        Current Patient:{{this_patient}}
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        Current Facility:{{this_facility}}
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        Current Unit:{{this_unit}}
+    </div>
+    
+    <div class="container">
+
+        <div class="leftpane">
+            <form method="POST">
+                {% csrf_token %}
+                <!-- <label for="patient_dropdown">Choose a Different Patient</label><br> -->
+                <select name="patient_dropdown" id="patient_dropdown">
+                    {% for one_patient in unassigned_patients %}
+                    {% if one_patient == this_patient %}
+                    <option value="{{one_patient.id}}" selected>{{one_patient}}</option>
+                    {% else %}
+                    <option value="{{one_patient.id}}">{{one_patient}}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select><br>
+                <button type="submit" class="button-big">Select a Different Patient</button>
+                <input type='hidden' name='what_to_do' value='choose_patient'>
+                <input type='hidden' name='facility_dropdown' value='{{this_facility.name}}'>
+                <input type='hidden' name='unit_dropdown' value='{{this_unit.id}}'>
+                <input type='hidden' name='new_patient' value='{{new_patient}}'>
+
+            </form>
+            <br>
+            <br>
+            <br>
+            <form method="POST">
+                {% csrf_token %}
+                <!-- <label for="facility_dropdown">Choose a different facility</label><br> -->
+                <select name="facility_dropdown" id="facility_dropdown">
+                    {% for one_facility in FacilityList %}
+                    {% if one_facility.name == this_facility.name %}
+                    <option value="{{one_facility.name}}" selected>{{one_facility.name}}</option>
+                    {% else %}
+                    <option value="{{one_facility.name}}">{{one_facility.name}}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select><br>
+                <input type='hidden' name='what_to_do' value='choose_facility'>
+                <input type='hidden' name='patient_dropdown' value='{{this_patient.id}}'>
+                <input type='hidden' name='unit_dropdown' value='{{this_unit.id}}'>
+                <input type='hidden' name='new_patient' value='{{new_patient}}'>
+                <button type="submit" class="button-big">Select a Different Facility</button>
+            </form>
+        </div>
+        <div class="middlepane">
+            <form method=POST>
+                {% csrf_token %}
+                <br>
+                <button type="submit" class="button-index">Assign to Facility Only</button>
+                <input type='hidden' name='what_to_do' value='assign_to_facility'>
+                <input type='hidden' name='facility_dropdown' value='{{this_facility.name}}'>
+                <input type='hidden' name='patient_dropdown' value='{{this_patient.id}}'>
+                <input type='hidden' name='unit_dropdown' value='{{this_unit.id}}'>
+                <input type='hidden' name='new_patient' value='{{new_patient}}'>
+            </form>
+            <br>
+            <br>
+            <br>
+            <form method="POST">
+                {% csrf_token %}
+                <label for="unit_dropdown">Choose a Unit</label><br>
+                <select name="unit_dropdown" id="unit_dropdown">
+                    {% for one_unit in UnitList %}
+                    {% if this_unit.name == one_unit.unit_name %}
+                    <option value="{{one_unit.id}}" selected>{{one_unit.unit_name }}</option>
+                    {% else %}
+                    <option value="{{one_unit.id }}">{{one_unit.unit_name }}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select><br>
+                <input type='hidden' name='what_to_do' value='choose_unit'>
+                <input type='hidden' name='patient_dropdown' value='{{this_patient.id}}'>
+                <input type='hidden' name='facility_dropdown' value='{{this_facility.name}}'>
+                <input type='hidden' name='new_patient' value='{{new_patient}}'>
+                <button type="submit" class="button-big">Select A Different Unit</button>
+            </form>
+        </div>
+
+        <div class="rightpane">
+
+            
+            
+            <form method='POST'>
+                {% if unit_chosen == 'True' %}
+            
+                {% csrf_token %}
+                <button type="submit" class="button-big" >Assign to Bed</button> <BR>
+                If you choose two the first selected will be used
+                {% if error_message == 'choose_bed' %}
+                You need to select a bed
+                {% endif %}
+                <table>
+                    <tr>
+                        <th></th>
+                        <th>Unit </th>
+                        <th>Room </th>
+                        <th>Bed</th>
+                    </tr>
+            
+            
+                    {% for one_bed in the_beds %}
+                    <tr>
+                        <td><input type='checkbox' value={{one_bed.id}} name=bed{{one_bed.id}}></td>
+                        <td>{{one_bed.unit.unit_name}}</td>
+                        <td>{{one_bed.room_number}}</td>
+                        <td>{{one_bed.bed_number}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                <input type='hidden' name='patient_dropdown' value='{{this_patient.id}}'>
+                <input type='hidden' name='facility_dropdown' value='{{this_facility.name}}'>
+                <input type='hidden' name='unit_dropdown' value='{{this_unit.id}}'>
+                <input type='hidden' name='what_to_do' value='bed_selected'>
+                <input type='hidden' name='new_patient' value='{{new_patient}}'>
+            
+                {% endif %}
+            </form>
+        </div>
+    </div>
+{% endblock %}

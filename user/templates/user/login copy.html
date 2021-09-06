@@ -1,0 +1,24 @@
+<!-- This is the login I began using prior to developing front end -->
+
+{% extends 'Base.html' %}
+
+
+
+{% block content %}
+{% if failed_login %} 
+    <center>Login failed<br></center>
+{% else %} 
+    <br>
+{% endif %} 
+<form method="POST">
+    {% csrf_token %}
+    <center>
+    <label for="username">User name:</label><br>
+    <input type="text" id="username" name="username"><br>
+    <label for="password">Password:</label><br>
+    <input type="password" id="password" name="password"><br>
+   
+    <button type="submit" class="btn btn-success">Press This</button>
+    </center>
+</form>
+{% endblock %}

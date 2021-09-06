@@ -1,0 +1,79 @@
+{% extends 'Base.html' %}
+
+{% block content %} 
+<center>
+<form method="POST">
+    {% csrf_token %}
+Filter On Credentials<br>
+    <table>
+        <tr>
+        {% for one_credential in credential_list %}
+ 
+        
+            <td><input type='checkbox' value={{one_credential.credentials}} name=c{{one_credential.credentials}}>
+            {{one_credential.credentials}}</td>
+
+            {% if forloop.counter|divisibleby:6 %}
+                </tr><tr>
+            {% endif %}        
+        {% endfor %}
+    </table>
+    <input type='hidden' name='filter' value='True'>     
+    <button type="submit" class="btn btn-success">Filter on Credentials</button>
+</form>    
+<br>
+    <a href="/">Return to Home Screen</a><br>
+    <form method=POST>
+        <input type='hidden' name='filter' value='False'>     
+
+        <input type="submit" value="Select" style="height:50px;width:75px; font-size : 20px"><br>
+    {% csrf_token %}
+<table>
+    <td>    
+        <input type='radio' value='delete' name='what_to_do' id='delete'>
+        <lable for='delete'>Delete selected members</lable>
+    </td>
+    <td>
+        <input type='radio' value='edit' name='what_to_do' id='edit_profiles'>
+        <lable for='edit_profiles'>Edit profiles of selected members</lable>
+    </td>
+    <td> 
+        <input type='radio' value='add_roles' name='what_to_do' id='add_roles'>
+        <lable for='add_roles'>Add roles of selected members</lable>    
+    </td>
+</table>
+
+<br>
+Staff Members 
+<table>
+<tr>
+<th>Choose</th>
+<th>First Name</th>
+<th>Last Name</th>
+<th>Username</th>
+<th>Credentials</th>
+<th>Email</th>
+<th>Phone</th>
+
+</tr>
+{% for one_member in all_members %}
+<tr>
+    <td><input type='checkbox' value={{one_member.id}} name=c{{one_member.username}}></td>
+    <td>{{one_member.first_name}}</td>
+    <td>{{one_member.last_name}}</td>
+    <td>{{one_member.username}}</td>
+    <td>{{one_member.credential.credentials}}</td>
+    <td>{{one_member.email}}</td>
+    <td>{{one_member.phone_number}}</td>
+ 
+ </tr>
+{% endfor %}
+</table>
+
+
+
+</form>
+
+</center>
+
+{% endblock %} 

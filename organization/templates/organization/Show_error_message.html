@@ -1,0 +1,10 @@
+{% extends 'Base.html' %}
+
+{% block content %}
+<center>
+{% if error_message == 'No_Facilities'}
+    There are no facilities to view
+{% endif %} 
+<form action='/'><button type="submit" class="btn btn-success"> Done </button></form>
+</center>
+{% endblock %}

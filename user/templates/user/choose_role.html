@@ -1,0 +1,86 @@
+{% extends 'Base.html' %}
+
+{% block content %}
+    {% load static %}
+    <!-- <div class="heading_bar_split">
+        <div class="heading_left">
+            Telegraph<br>A Patient Centered Health Care Solution<br>
+            <h4>User: {{user.first_name}} {{user.last_name}}  <a href="/user/logout"><button class="button-header">Logout</button></a></h4>
+        </div>
+
+        <div class="heading_right">
+            <img src="{% static 'images/telegraphsmall.jpg' %}" alt="Telegraph picture" height=120 align="right">
+        </div>
+    </div> -->
+    
+    <form method="POST">
+        {% csrf_token %}
+        <div class="sub-title">
+            <center>
+                {{Error_Message}}<br>
+                <button type="submit" class="button-index">Choose Your Role</button>
+                <button type="submit" name="cancel" class="button-index">Cancel</button>
+                
+            </center>
+        </div>
+        
+        <div class="view-info-box">
+            Current Roles
+            <table>
+                <tr>
+                    <th>Role</th>
+                    <th>Unit</th>
+                    <th>Facility</th>
+                </tr>
+                {% for one_role in this_user_current_roles %}
+                    <tr>
+                        <td>{{one_role.role}}</td>
+                        <td>{{one_role.unit}}</td>
+                        <td>{{one_role.facility}}</td>
+                    </tr> 
+                {% endfor %}
+            </table>
+        </div>
+        <div class="body-split">
+            <div class="body-left-buttons">
+                <center>
+                    Choose Facilities and Units <br>
+                </center>
+                    {% for one_facility in FacilityList %}
+                        <div class="dropdown">
+                            <button class="dropbtn">{{one_facility.name}}</button>
+                            <div class="dropdown-content">
+                                <input type="checkbox" id="{{one_facility.name}}-all"  onclick="checkAll(this)" name="{{one_facility.id}}-all" value="True">
+                                <lable for="{{one_facility.name}}-all">Select All</lable>
+                                <br>
+                                {% for one_unit in UnitList %} 
+                                    {% if one_facility == one_unit.facility %} 
+                                        <input type="checkbox" id="{{one_unit}}" name="{{one_unit.id}}-{{one_unit.facility.id}}" value="True">
+                                        <lable for="{{one_unit}}">{{one_unit}}</lable>
+                                        <br>
+                                    {% endif %} 
+                                {% endfor %} 
+                            </div>
+                        </div>
+
+                    
+                    {% endfor %}
+                
+            </div>
+
+            <div class="body-right">
+                <center>
+                    Choose Roles <br><br>
+                </center>
+                        {% for one_role in RolesList %}
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                                <input type="checkbox" id="{{one_role}}" name="role{{one_role.id}}" value="True">
+                                <lable for="{{one_role}}">{{one_role}}</lable>
+                                <br>
+                        {% endfor %}
+
+                
+            </div>
+        </div>
+    </form>
+{% endblock %} 

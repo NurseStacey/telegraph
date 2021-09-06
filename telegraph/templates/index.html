@@ -1,0 +1,62 @@
+{% extends 'Base.html' %}
+
+
+
+{% block content %} 
+
+    {% load static %}
+    <!-- <div class="heading_bar_split">
+        <div class="heading_left">
+            Welcome to Telegraph<br>The Solution to Communication in Health Care
+        </div>
+    
+        <div class="heading_right">
+            <img src="{% static 'images/telegraphsmall.jpg' %}" alt="Telegraph picture" height=120 align="right">
+        </div>
+    </div> -->
+
+    <div class="sub-title">
+        <center>
+            Home Page
+        </center>
+    </div>    
+    
+    {% if user.is_authenticated %}
+        <div class="body-notsplit">
+            <a href="user/logout"><button class="button-index">Logout</button></a>
+            <a href="message/create_message"><button class="button-index">Create Message</button></a>
+            <a href="user/choose_role"><button class="button-index">Choose Role</button></a>
+            <a href="user/view_my_patients"><button class="button-index">View My Patients</button></a>
+            <a href='patient/add_patient'><button class="button-index">Add a Patient</button></a>
+        </div>        
+                <!-- <a href='patient/batch_patient_load'><button class="button-index">Batch Patient Loadt</button></a> -->
+        <div class="body-notsplit">
+            <a href='patient/view_patients'><button class="button-index">View Patients</button></a>
+            <a href='patient/assign_patient_to_room'><button class="button-index">Assign Patient to a Room</button></a>
+        </div>
+
+    {% else %}
+        <div class="body-split">
+        
+            <div class="body-left">
+                <img src="{% static 'images/telegraphbig.jpg' %}" width="65%" height="65%" alt="Telegraph picture">
+            </div>
+        
+            <div class="body-right">
+                <div class="form-box">
+                    <form method="POST" action='/user/login/'>
+                        {% csrf_token %}
+                        <center>
+                            <label for="username">User name:</label>
+                            <input type="text" id="username" name="username"><br>
+                            <label for="password">Password:</label>
+                            <input type="password" id="password" name="password"><br>
+                            <button type="submit" class="btn btn-success">Login</button>
+                        </center>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- <a href="user/login"><button class="button-index">Login</button></a> -->
+    {% endif %} 
+{% endblock %} 

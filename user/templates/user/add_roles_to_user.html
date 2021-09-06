@@ -1,0 +1,101 @@
+{% extends 'Base.html' %}
+
+
+
+{% block content %}
+
+
+    <form method="POST" action='/user/update_add_roles_to_user/'>
+        {% csrf_token %}
+        <center>
+            
+
+            <label for="staff_drop_down">Staff </label><br>
+            <select name="staff_drop_down" id="staff_drop_down">
+                {% for this_user in which_members %}         
+                    {% if which_user.username == this_user.username %} 
+                        <option value={{this_user.username}} selected>{{this_user}}</option>
+                    {% else %} 
+                        <option value={{this_user.username}}>{{this_user}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select><br>
+            {% for this_username in which_members %}         
+                <input type='hidden' name='c{{ this_username.username }}' value=True/>
+            {% endfor %}
+            <input type='hidden' name='num_members' value='{{num_members}}'> 
+            <input type='hidden' name='facility_dropdown' value='{{this_facility.name}}'>  
+            <input type='hidden' name='from_where' value='add_roles'>   
+            <input type='hidden' name='what_to_do' value='add_roles_change_staff_member'>
+        <button type="submit" class="btn btn-success">Change Staff Member</button><br>
+      
+    </form>
+    Currently adding roles for {{this_user.username}}
+    <form method="POST" action='/user/update_add_roles_to_user/'>
+        {% csrf_token %} 
+        
+        <label for="facility_dropdown">Choose a facility</label><br>
+        <select name="facility_dropdown" id="facility_dropdown">
+            {% for one_facility in FacilityList %} 
+        
+            {% if one_facility.name == this_facility.name %} 
+                <option value="{{one_facility.name}}" selected>{{one_facility.name}}</option>
+            {% else %} 
+                <option value="{{one_facility.name}}">{{one_facility.name}}</option>
+            {% endif %}
+            {% endfor %} 
+        </select><br>
+        <input type='hidden' name='what_to_do' value='change_facility'>
+        {% for this_username in which_members %}         
+            <input type='hidden' name='c{{ this_username.username }}' value=True/>
+        {% endfor %}
+        <input type='hidden' name='num_members' value='{{num_members}}'> 
+        <input type='hidden' name='from_where' value='add_roles'>   
+        <input type='hidden' name='staff_drop_down' value={{which_user.username}}>    
+        <input type='hidden' name='what_to_do' value='add_roles_change_facility'> 
+        
+        <button type="submit" class="btn btn-success">Change Facility</button><br>
+
+    </form>
+    <form method="POST" action='/user/add_roles_to_user/'>
+        Select a role and unit (or choose all units)
+        {% csrf_token %} 
+        <table><tr>
+            <td><input type='checkbox' id='select_all' name='select_all' value=True>
+                <label for='select_all'>Select All</label></td>
+
+            {% for this_unit in the_units %}   
+                {% ifequal forloop.counter|divisibleby:'5' True %} 
+                    </tr><tr>
+                {% endifequal %} 
+                <td>
+                    <input type='checkbox' id='c{{ this_unit.unit_name }}' name='c{{ this_unit.unit_name }}' value=True>
+                    <label for='c{{ this_unit.unit_name }}'>{{this_unit.unit_name}}</label>
+                </td>
+
+            {% endfor %} 
+        </tr></table>
+            
+        <br>
+        <table><tr>
+
+            {% for this_role in the_roles %}   
+                {% ifequal forloop.counter|divisibleby:'5' True %} 
+                    </tr><tr>
+                {% endifequal %} 
+                <td>
+                    <input type='checkbox' id='c{{ this_role.role }}' name='c{{ this_role.role }}' value=True>
+                    <label for='c{{ this_role.role}}'>{{this_role.role}}</label>
+                </td>
+
+            {% endfor %} 
+        </tr></table>        
+        <button type="submit" class="btn btn-success">Choose role/unit</button><br>
+        <input type='hidden' name='num_members' value='{{num_members}}'> 
+        <input type='hidden' name='from_where' value='add_roles'>   
+        <input type='hidden' name='staff_drop_down' value={{which_user.username}}>    
+        <input type='hidden' name='facility_dropdown' value='{{this_facility.name}}'>    
+        <input type='hidden' name='what_to_do' value='role_selected'>
+    </form>
+</center> 
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'Base.html' %}
+
+
+
+{% block content %}
+
+<center>
+<form method="POST">
+    {% csrf_token %} 
+    {% if duplicate_error %} 
+        The following rooms were already in the database for this unit.<br>
+        {% for room in duplicate_rooms %} 
+            {{room}}<br>
+        {% endfor %} 
+    {% endif %}
+        Adding rooms for {{unit_name}} at {{facility_dropdown}}<br>
+        Add the room numbers to have {{number_beds}} beds<br>
+        <textarea id="room_numbers" name="room_numbers" rows=10></textarea>
+    <button type="submit" class="btn btn-success"> Add </button>
+    <br>
+    <input type='hidden' name='facility_dropdown' value='{{facility_dropdown}}'>
+    <input type='hidden' name='unit_name' value='{{unit_name}}'>
+    <input type='hidden' name='number_beds' value='{{number_beds}}'>
+</form>
+<form action='/'><button type="submit" class="btn btn-success"> Done </button></form>
+</center>
+{% endblock %}

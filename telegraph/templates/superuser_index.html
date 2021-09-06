@@ -1,0 +1,50 @@
+{% extends 'Base.html' %}
+
+{% block content %} 
+<br>
+    <br>
+    <center>
+    {% if user.is_authenticated %}
+        
+            Successfuly logged in <BR><BR>
+                And you are a superuser
+        {% if user.is_superuser %}
+        {% endif %} 
+    <table>
+        <tr>
+            <td><a href="user/register_one">Register a New User</a><BR></td>
+            <td><a href='organization/create_facility'>Add a New Facility</a><BR></td>
+            <td><a href='patient/add_patient'>Add a Patient</a></td>
+            <td><a href='user/upload_staff_csv'>Upload staff from CSV File</a><BR></td>
+            
+            
+        </tr>
+        <tr>
+            <td><a href="user/add_credentials">Add Credentials</a><BR></td>
+            <td><a href='organization/create_facility_units'>Create a Unit in a Facility</a><BR></td>
+            <td><a href='patient/assign_patient_to_room'>Assign Patient to a Room</a></td>
+            <td><a href='user/print_staff'>Print Staff to CSV File</a><BR></td>
+        </tr>
+        <tr>
+            <td><a href="user/add_roles">Add Roles</a><BR></td>                         
+            <td><a href='organization/edit_facility'>Edit Facility</a></td>
+            <td><a href='patient/view_patients'>View Patients</a></td>
+            <td><a href='organization/printout_facilities'>Print facilities to CSV File</a><BR></td>               
+        </tr>
+        <tr>
+            <td><a href="user/view_all_staff_members">View All Staff</a><BR></td>
+            <td><a href='organization/view_facility_beds'>View Facility Units</a><BR></td> 
+                <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            
+            <td></td>
+        </tr>
+    </table>
+    <a href="user/logout">Log out</a>
+    {% else %} 
+        <a href="user/login">Login Here</a><BR>
+    {% endif %} 
+        </center>
+{% endblock %} 

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+    <style>
+
+    </style>
+    <title>Telegraph</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script  src="{% static 'js/script.js' %}"></script>
+    <script>
+
+    </script>
+</head>
+
+<body>
+    <div class="heading_bar_split">
+        <div class="heading_left">
+            Telegraph<br>A Patient Centered Health Care Solution<br>
+            {% if user.is_authenticated %}
+                <h4>User: {{user.first_name}} {{user.last_name}} <a href="/user/logout"><button
+                        class="button-header">Logout</button></a></h4>
+            {% else %} 
+                <!-- <h4><a href="user/login"><button class="button-header">Login</button></a></h4> -->
+            {% endif %}
+        </div>
+        <div class="heading_right">
+            <img src="{% static 'images/telegraphsmall.jpg' %}" alt="Telegraph picture" height=160 align="right">
+        </div>
+    </div>
+    {% block content%}
+      
+    {% endblock%}
+
+</body>
+
+</html>

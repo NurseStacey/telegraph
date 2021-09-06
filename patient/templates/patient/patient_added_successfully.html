@@ -1,0 +1,18 @@
+{% extends 'Base.html' %}
+
+
+
+{% block content %}
+<center>
+Successfully added a patient<br>
+<form action='/'>
+    <button type="submit">Return to Home Screen</button>
+</form>
+<form method=POST action='/patient/assign_patient_to_room/'>
+    {% csrf_token %}
+    <button type="submit">Assign patient to room/facility</button>
+    <input type='hidden' name='new_patient' value='True'>      
+    <input type='hidden' name='patient_dropdown' value='{{patient_id}}'>      
+</form>
+</center>
+{% endblock %}

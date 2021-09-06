@@ -1,0 +1,57 @@
+{% extends 'Base.html' %}
+
+
+
+{% block content %}
+<center>Register a New User</center>
+
+
+{% if this_user.duplicate_username %} 
+    <center>Username already in use</center>
+{% endif %} 
+
+{% if this_user.bad_email %} 
+    <center>Please fix the email address</center>
+{% endif %} 
+
+{% if this_user.duplicate_email %} 
+    <center>Email already in use</center>
+{% endif %} 
+
+<form method="POST">
+    {% csrf_token %}
+    <center>
+    <label for="fname" style=width:240px; display: inline-block>First Name:</label>
+    <input type="text" id="fname" name="fname" value={{this_user.fname}}><br>
+    <label for="lname">Last Name:</label>
+    <input type="text" id="lname" name="lname" value={{this_user.lname}}><br>
+    <label for="phonenumber">Phone Number:</label>
+    <input type="tel" id="phonenumber" name="phonenumber" pattern='[0-9]{3} - [0-9]{3} - [0-9]{4}' value={{this_user.phonenumber}}><br>
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" value={{this_user.username}}><br>
+    <label for="email">Email:</label>
+    <input type="text" id="email" name="email" value={{this_user.email}}><br>
+    <label for="credentials">Credentials:</label>
+    <select name="credentials" id="credentials" value={{this_user.this_credential}}>
+        {% for this_credential in this_user.credential_list %}         
+        <option value={{this_credential.id}}>{{this_credential.credentials}}</option>
+        {% endfor %}>
+    </select><br>
+    Is this person a super user?
+    {% if user.is_superuser %}
+        <input type="radio" id="is_superuser" name="is_superuser" value="Yes" checked="checked">
+        <label for="is_superuser">Yes</label>
+        <input type="radio" id="not_superuser" name="is_superuser" value="No" >
+        <label for="not_superuser">No</label><br>
+    {% else %} 
+        <input type="radio" id="is_superuser" name="is_superuser" value="Yes">
+        <label for="is_superuser">Yes</label>
+        <input type="radio" id="not_superuser" name="is_superuser" value="No" checked="checked">
+        <label for="not_superuser">No</label><br>
+    {% endif %}
+
+   
+    <button type="submit" class="btn btn-success">Press This</button>
+    </center>
+</form>
+{% endblock %}

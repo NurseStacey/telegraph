@@ -1,0 +1,39 @@
+{% extends 'Base.html' %}
+
+
+
+{% block content %}
+<center>
+    Register a New Patient
+<br>
+
+{% if return_error == 'Duplicate' %} 
+    Patient with this name and date of birth already exists 
+{% endif %} 
+
+{% if return_error == 'Bad_Date' %} 
+There is a problem with the date of birth
+{% endif %} 
+
+{% if return_error == 'Success' %} 
+Successfully added patient
+{% endif %} 
+<br><br><br><br>
+<form method="POST">
+    {% csrf_token %}
+        
+
+        <label for="fname" >First Name:</label>
+        <input type="text" id="fname" name="fname" value={{this_patient.fname}}></input><br><br>
+        <label for="lname">Last Name:</label>
+        <input type="text" id="lname" name="lname" value={{this_patient.lname}}></input><br><br>
+        <label for="dob">Date of Birth:</label>
+        <input type="text" id="dob" name="dob" value={{this_patient.dob}}></input><br><br>
+    
+        <button type="submit" class="button-index">Add this patient</button>
+        <button type="cancel" class="button-index" name="cancel">Cancel</button>
+   
+</form>
+
+</center>
+{% endblock %}

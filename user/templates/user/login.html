@@ -1,0 +1,44 @@
+{% extends 'Base.html' %}
+
+{% block content %}
+    {% load static %}
+    <!-- <div class="heading_bar_split">
+        <div class="heading_left">
+            Welcome to Telegraph<br>The Solution to Communication in Health Care
+        </div>
+
+        <div class="heading_right">
+            <img src="{% static 'images/telegraphsmall.jpg' %}" alt="Telegraph picture" height=120 align="right">
+        </div>
+    </div> -->
+
+    <div class="sub-title">
+        {% if failed_login %}
+        <center>Login failed</center>
+        {% else %}
+        <center>Login Here</center>
+        {% endif %}
+    </div>
+
+    <div class="body-split">
+
+        <div class="body-left">
+            <img src="{% static 'images/telegraphbig.jpg' %}" width="65%" height="65%" alt="Telegraph picture">
+        </div>
+            
+        <div class="body-right">
+            <div class="form-box">
+                <form method="POST">
+                    {% csrf_token %}
+                    <center>
+                        <label for="username" >User name:</label>
+                        <input type="text"  id="username" name="username"><br>
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password"><br>
+                        <button type="submit" class="btn btn-success">Login</button>
+                    </center>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %} 

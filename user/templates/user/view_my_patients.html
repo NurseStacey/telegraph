@@ -1,0 +1,27 @@
+{% extends 'Base.html' %}
+
+{% block content %}
+    {% load static %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="sub-title">
+            {{ Error_Message }}
+            <center>
+                {{Error_Message}}<br>
+                <button type="submit" name="patient_select" class="button-index">Select Patient</button>
+                <button type="submit" name="cancel" class="button-index">Cancel</button>
+                
+            </center>
+        </div>
+
+        <div class="radio-patients">
+            {% for one_patient in the_patients %} 
+                <input type="radio" id="id-{{one_patient.patient.id}}" name="patient" value="one_patient.patient.id">
+                <label for="id-{{one_patient.patient.id}}">{{one_patient.patient}}{{one_patient.unit}}-{{one_patient.room}}</label>
+            {% endfor %} 
+        </div>
+
+
+    </form>
+{% endblock %} 

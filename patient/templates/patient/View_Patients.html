@@ -1,0 +1,90 @@
+{% extends 'Base.html' %}
+
+
+
+{% block content %}
+<center>
+    Patient Viewer
+<br>
+<form action='/'>
+    <button type="submit">Return to Home Screen</button>
+</form>
+
+<form method="POST">
+    {% csrf_token %}
+    filters
+    <label for="facility_dropdown">Choose a facility</label><br>
+    <select name="facility_dropdown" id="facility_dropdown">
+        {% for one_facility in FacilityList %} 
+            {% if one_facility.name == this_facility.name %} 
+                <option value="{{one_facility.name}}" selected>{{one_facility.name}}</option>
+            {% else %} 
+                <option value="{{one_facility.name}}">{{one_facility.name}}</option>
+            {% endif %} 
+        {% endfor %} 
+    </select><br>
+    
+    <input type='hidden' name='what_to_do' value='filter'> 
+    <input type='radio' id='patient_choice_1' name='which_patients' value='unassigned'>
+    <lable for='patient_choice_1'>All Unassigned</lable>
+
+    <input type='radio' id='patient_choice_2' name='which_patients' value='assigned_to_facility'>
+    <lable for='patient_choice_2'>All assigned to a facility only</lable>
+
+    <input type='radio' id='patient_choice_3' name='which_patients' value='assigned_to_room'>
+    <lable for='patient_choice_3'>All assigned to a bed</lable>
+
+    <input type='radio' id='patient_choice_4' name='which_patients' value='all'>
+    <lable for='patient_choice_4'>All</lable>
+
+
+    <BR><button type="submit">Filter</button>
+</form>
+<BR>
+<form method='POST' action='/patient/edit_patient/'>
+    {% csrf_token %}
+    <table>
+        <tr>
+            <th></th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Date of Birth</th>
+            <th>Facility</th>
+            <th>Unit</th>
+            <th>Room</th>
+            <th>Bed</th>
+        </tr>
+
+        {% for one_patient in unassigned_patients %} 
+            <tr>
+                <th><input type='checkbox' value={{one_patient.id}} name=patientcb{{one_patient.id}}></th>
+                <th>{{one_patient.First_Name}}</th>
+                <th>{{one_patient.Last_Name}}</th>
+                <th>{{one_patient.Date_of_Birth}}</th>
+            </tr>
+        {% endfor %} 
+
+        {% for one_patient in assigned_patients %} 
+            <tr>
+                <th><input type='checkbox' value={{one_patient.id}} name=patientcb{{one_patient.id}}></th>                
+                <th>{{one_patient.patient.First_Name}}</th>
+                <th>{{one_patient.patient.Last_Name}}</th>
+                <th>{{one_patient.patient.Date_of_Birth}}</th>
+
+                {% if one_patient.facility == None %} 
+                    <th>{{one_patient.room.unit.facility}}</th>    
+                {% else %}
+                    <th>{{one_patient.facility.name}}</th>
+                {% endif %} 
+                
+                <th>{{one_patient.room.unit.unit_name}}</th>
+                <th>{{one_patient.room.room_number}}</th>
+                <th>{{one_patient.room.bed_number}}</th>
+            </tr>
+        {% endfor %}         
+    </table>
+
+</form>
+
+</center>
+{% endblock %}

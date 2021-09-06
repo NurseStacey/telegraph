@@ -1,0 +1,109 @@
+{% extends 'Base.html' %}
+
+
+
+{% block content %}
+{% if update_status == 'success' %} 
+Successfully updated user information
+{% elif update_status == 'fail' %} 
+Did not successfully update user info
+{% endif %} 
+
+{% if this_user.bad_email %} 
+    <center>Please fix the email address</center>
+{% endif %} 
+
+{% if this_user.duplicate_email %} 
+    <center>Email already in use</center>
+{% endif %} 
+
+{% if this_user.new_user %}
+    {% if this_user.duplicate_username %} 
+        <center>Username already in use</center>
+    {% endif %} 
+{% else %}
+<center><a href="/">Return to Home Screen</a></center>
+    <form method="POST"  action='/user/change_user_edit_profile/'>
+        {% csrf_token %}
+        <center>
+
+            <label for="staff_drop_down">Staff Members</label><br>
+            <select name="staff_drop_down" id="staff_drop_down" value={{this_user.username}}>
+                {% for one_user in which_members %}         
+                    {% if this_user.username == one_user.username %} 
+                        <option value={{one_user.username}} selected>{{one_user}}</option>
+                    {% else %} 
+                        <option value={{one_user.username}}>{{one_user}}</option>
+                    {% endif %} 
+                {% endfor %}
+            </select><br>
+            {% for one_user in which_members %}         
+            <input type='hidden' name='username{{ forloop.counter }}' value='{{ one_user.username }}'/>
+            {% endfor %}  
+            <input type='hidden' name='num_members' value='{{num_members}}'>      
+            <input type='hidden' name='from_where' value='edit_profile'>
+        <button type="submit" class="btn btn-success">Update this staff member</button>
+    </center>    
+    </form>
+{% endif %}
+
+<form method="POST" action='/user/edit_profile/'>
+    {% csrf_token %}
+    <center>
+    {% if this_user.new_user %}
+        Register a New User
+    {% else %}
+        You are editing {{this_user.fname}} {{this_user.lname}}<br>
+    {% endif %}
+
+        <BR>
+    
+    <label for="fname">First Name:</label>
+    <input type="text" id="fname" name="fname" value={{this_user.fname}}><br>
+    <label for="lname">Last Name:</label>
+    <input type="text" id="lname" name="lname" value={{this_user.lname}}><br>
+    
+    {% if this_user.new_user %}
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value={{this_user.username}}><br>
+    {% else %}
+        <input type='hidden' name='username' value='{{this_user.username}}'>
+    {% endif %}
+
+    <label for="phonenumber">Phone Number:</label>
+    <input type="text" id="phonenumber" name="phonenumber" value={{this_user.phonenumber}}><br>
+    <label for="email">Email:</label>
+    <input type="text" id="email" name="email" value={{this_user.email}}><br>
+    <label for="credentials">Credentials:</label>
+    <select name="credentials" id="credentials" value={{this_user.this_credential}}>
+        {% for this_credential in this_user.credential_list %}         
+        <option value={{this_credential.id}}>{{this_credential.credentials}}</option>
+        {% endfor %}>
+    </select><br>
+    Is this person a super user?
+    {% if this_user.is_superuser %}
+
+        <input type="radio" id="is_superuser" name="is_superuser" value="Yes" checked="checked">
+        <label for="is_superuser">Yes</label>
+        <input type="radio" id="not_superuser" name="is_superuser" value="No" >
+        <label for="not_superuser">No</label><br>
+    {% else %} 
+        <input type="radio" id="is_superuser" name="is_superuser" value="Yes">
+        <label for="is_superuser">Yes</label>
+        <input type="radio" id="not_superuser" name="is_superuser" value="No"  checked="checked">
+        <label for="not_superuser">No</label><br>
+    {% endif %} 
+
+    {% if this_user.new_user %}
+
+    {% else %} 
+        {% for this_username in which_members %}         
+        <input type='hidden' name='username{{ forloop.counter }}' value='{{ this_username }}'/>
+        {% endfor %}  
+        <input type='hidden' name='num_members' value='{{num_members}}'>      
+    {% endif %}
+
+    <button type="submit" class="btn btn-success">Update member data</button>
+    </center>
+</form>
+{% endblock %}

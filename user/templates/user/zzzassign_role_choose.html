@@ -1,0 +1,26 @@
+{% extends 'Base.html' %}
+
+
+
+{% block content %}
+<center>
+    <form action='/'>
+        <button type="submit" class="btn btn-success">Cancel and Return to Home Screen</button>
+    </form>
+Choose unit for {{facility.Facility_Name}} or all units to apply role to
+
+    <input type='checkbox' value=select_all name=select_all>
+    Select All<br>
+    {% for one_unit in the_units %}
+        <input type='checkbox' value={{one_unit.unit}} name=c{{one_unit.unit}}>
+        {{one_unit.unit}}<br>
+    {% endfor %}
+    <input type='hidden' name='what_to_do' value='unit_chosen'>
+    <input type='hidden' name='facility_dropdown' value='facility'>
+</form>
+
+
+
+</center>
+
+{% endblock %} 

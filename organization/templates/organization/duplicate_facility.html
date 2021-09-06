@@ -1,0 +1,14 @@
+{% extends 'Base.html' %}
+
+{% block content %} 
+<center>
+    {% if duplicate_error %} 
+    Facility a already exists<br>
+    Please use update data instead. <br>
+    {% endif %} 
+    {% if missing_facility_name %}  
+    Need to enter a facility name<br>
+    
+    {% endif %} 
+<center><a href="/">Return to Home Screen</a></center>
+{% endblock %}

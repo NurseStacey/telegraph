@@ -1,0 +1,126 @@
+{% extends 'Base.html' %}
+
+
+
+{% block content %}
+<center>
+    {{update_message}}<br>
+<form action='/'>
+    <button type="submit" class="btn btn-success">Return to Home Screen</button>
+</form>
+<form method="POST">
+    {% csrf_token %} 
+    
+    <label for="facility_dropdown">Choose a facility</label><br>
+    <select name="facility_dropdown" id="facility_dropdown">
+        {% for one_facility in FacilityList %} 
+    
+        {% if one_facility.name == facility.name %} 
+            <option value="{{one_facility.name}}" selected>{{one_facility.name}}</option>
+        {% else %} 
+            <option value="{{one_facility.name}}">{{one_facility.name}}</option>
+        {% endif %}
+        {% endfor %} 
+    </select><br>
+    <button type="submit" class="btn btn-success">Select</button>
+    <input type='hidden' name='what_to_do' value='facility_chosen'>
+</form>
+
+<form method="POST">
+    {% csrf_token %} 
+    Facility: {{facility.name}} <br>
+
+    <label for="address1">Address Line1:</label>
+    <input type="text" id="address1" name="address1" value='{{facility.address_1}}'><br>
+
+
+    <label for="address2">Address Line2:</label>
+    <input type="text" id="address2" name="address2" value='{{facility.address_2}}'><br>
+        
+
+    <label for="address3">Address Line3:</label>
+    <input type="text" id="address3" name="address3" value='{{facility.address_3}}'><br>
+    
+    <label for="city">City</label>
+    <input type="text" id="city" name="city" value='{{facility.city}}'><br>
+
+    <label for="state">State</label>
+    <input type="text" id="state" name="state" value='{{facility.state}}'><br>
+    
+    
+    <label for="zip_code">Zip Code</label>
+    <input type="text" id="zip_code" name="zip_code" value='{{facility.zip_code}}'><br>
+    
+    
+    <label for="phone_number">Phone Number</label>
+
+    <input type="text" id="phone_number" name="phone_number" value='{{facility.phone_number}}'><br>
+    
+    
+    <label for="fax_number">Fax Number</label>
+    <input type="text" id="fax_number" name="fax_number" value='{{facility.fax_number}}'><br>
+    <button type="submit" class="btn btn-success">Update Info</button>
+    <input type='hidden' name='what_to_do' value='update_base_data'>  
+    <input type='hidden' name='unit_dropdown' value='{{which_unit}}'>  
+    <input type='hidden' name='facility_dropdown' value='{{facility.name}}'>    
+</form>
+
+
+{% if has_units %} 
+    <form method="POST">
+
+
+        {% csrf_token %} 
+        <label for="unit_dropdown">Choose a facility</label><br>
+        <select name="unit_dropdown" id="unit_dropdown">
+            {% for one_unit in the_units %} 
+                {% if one_unit.unit_name == which_unit %} 
+                    <option value="{{one_unit.unit_name}}" selected>{{one_unit.unit_name}}</option>
+                {% else %} 
+                    <option value="{{one_unit.unit_name}}">{{one_unit.unit_name}}</option>
+                {% endif %}
+            {% endfor %} 
+        </select><br>
+        <button type="submit" class="btn btn-success">Choose a unit</button>
+        <input type='hidden' name='what_to_do' value='unit_chosen'>
+        <input type='hidden' name='facility_dropdown' value='{{facility.name}}'>
+    </form>
+{% else %} 
+    This facility has no units added yet
+{% endif %} 
+
+{% if has_units %} 
+<form method='POST'>
+    {% csrf_token %} 
+    Choose new unit names here<BR>
+    {% for one_unit in the_units %} 
+        {{one_unit.unit}}    <input type="text" id="unit_{{one_unit.unit_name}}" name="unit_{{one_unit.unit_name}}"  value='{{one_unit.unit_name}} '><br>
+
+{% endfor %}
+<input type='hidden' name='what_to_do' value='change_unit_names'> 
+<input type='hidden' name='facility_dropdown' value='{{facility.name}}'>
+<input type='hidden' name='unit_dropdown' value='{{which_unit}}'>
+<button type="submit" class="btn btn-success">Update Unit Names</button><br>   
+</form>
+{% endif %} 
+
+Edit the beds for {{which_unit}} unit
+<form method='POST'>
+    {% csrf_token %} 
+<br>
+    <button type="submit" class="btn btn-success">Update Bed Information</button><br>    
+    {% for one_group in the_rooms_by_bed %} 
+        {% if forloop.counter > 0  %} 
+
+                Rooms with {{ forloop.counter }} <br>
+                
+                <textarea id="room_numbers{{forloop.counter}}" name="room_numbers{{forloop.counter }}" rows=10>{{one_group}}</textarea>     <br>       
+
+        {% endif %} 
+    {% endfor %} 
+    <input type='hidden' name='what_to_do' value='edit_beds'>
+    <input type='hidden' name='facility_dropdown' value='{{facility.name}}'>
+    <input type='hidden' name='unit_dropdown' value='{{which_unit}}'>
+</form>
+</center>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'Base.html' %}
+
+
+
+{% block content %}
+<center>
+    {{update_message}}<br>
+<form action='/'>
+    <button type="submit" class="btn btn-success">Cancel and Return to Home Screen</button>
+</form>
+<form method="POST">
+    {% csrf_token %} 
+    
+    <label for="facility_dropdown">Choose a facility</label><br>
+    <select name="facility_dropdown" id="facility_dropdown">
+        {% for one_facility in FacilityList %} 
+    
+        {% if one_facility.Facility_Name == facility.Facility_Name %} 
+            <option value="{{one_facility.Facility_Name}}" selected>{{one_facility.Facility_Name}}</option>
+        {% else %} 
+            <option value="{{one_facility.Facility_Name}}">{{one_facility.Facility_Name}}</option>
+        {% endif %}
+        {% endfor %} 
+    </select><br>
+    <button type="submit" class="btn btn-success">Select</button>
+    <input type='hidden' name='what_to_do' value='facility_chosen'>
+</form>
+
+
+
+</center>
+
+{% endblock %} 

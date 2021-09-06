@@ -1,0 +1,33 @@
+{% extends 'Base.html' %}
+
+
+
+{% block content %}
+
+
+<form method="POST">
+    {% csrf_token %}
+    <center>
+        
+
+    <label for="role">Add roles that you would like available</label><br>
+    <input type=text id="role" name="role"><br><br>
+    
+    Choose credentials to associate with this role
+    Won't be able to assign this role if staff member does not have the chosen credentials
+    <table><tr>
+        {% for this_credential in credential_list %}   
+            <td>
+                <input type='checkbox' id='credential{{ this_credential.id }}' name='credential{{ this_credential.id }}' value={{this_credential.id}}>
+                <label for='credential{{ this_credential.id }}'>{{this_credential.credentials}}</label>
+            </td>
+            {% ifequal forloop.counter|divisibleby:'5' True %} 
+                </tr><tr>
+            {% endifequal %} 
+        {% endfor %} 
+    </tr></table>
+
+    <button type="submit" class="btn btn-success">Add roles</button>
+    </center>
+</form>
+{% endblock %}
